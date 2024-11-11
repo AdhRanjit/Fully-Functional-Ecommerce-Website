@@ -1,0 +1,64 @@
+First of all create virtual environment
+
+> virtualenv venv
+
+activate virtual env
+
+> source venv/bin/activate
+
+now install required libraries
+
+> pip install -r requirements.txt
+
+apply migrations
+
+normally "python manage.py makemigrations && python manage.py migrate" will work but to be safe
+use below command 
+
+> python manage.py makemigrations && python manage.py migrate && python manage.py makemigrations home && python manage.py migrate && python manage.py makemigrations products && python manage.py migrate && python manage.py makemigrations accounts && python manage.py migrate
+
+Now lets look inside .env file
+
+EMAIL_HOST_USER => your gmail id
+EMAIL_HOST_PASSWORD => password for gmail
+STRIPE_PUBLIC => stripe public key
+STRIPE_PRIVATE => stripe private key
+
+now let's go to templates/account/cart.html
+
+in line 112 add your public key inside Stripe('')
+
+create a admin account
+
+> python manage.py createsuperuser
+
+and follow prompts on screen. This id and password will be used to login to admin panel
+
+and finally we need to tell django what the domain of our website will be for that
+
+> python manage.py shell
+> from django.contrib.sites.models import Site
+> site = Site.objects.get(id=1)
+> site.domain = 'localhost:8000'
+> site.name = 'BrandT'
+> site.save()
+> exit()
+
+Doing this much will make a fully functional website.
+
+Now you need to login using your super user id/password in admin panel and add desired products.
+
+Note:
+
+1) Pressing a button once will do the thing don't press it continiously (Sometime it is slow, i noticed lag on that so wait for sometime)
+2) default card no. for stripe is 4242.......42 and, date and cvv can be anything
+
+After running the file, if you want to run again later, you dont have to do it again:
+follow this steps:
+For my project: C:\Users\rjadh\OneDrive\Desktop\Program\SE_Project\Project\Client>
+(Powershell)
+1. Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+2. .\venv\Scripts\Activate
+3. python manage.py runserver
+4. open http://127.0.0.1:8000/ in website for website
+5. http://127.0.0.1:8000/admin/login/?next=/admin/ to login admin page

@@ -1,0 +1,156 @@
+<!-- This html file will control the carts when the products are added to the cart while shooping from the website -->
+
+{% extends "base/base.html" %}
+{% block title %}Cart{% endblock %}
+{% block start %} {% load static %}
+
+<section class="section-content padding-y">
+  <div class="container">
+    {% include 'base/alert.html' %}
+    <div class="row">
+      <main class="col-md-9">
+        <div class="card">
+          <table class="table table-borderless table-shopping-cart">
+            <thead class="text-muted">
+              <tr class="small text-uppercase">
+                <th scope="col">Product</th>
+                <th scope="col" width="120">Quantity</th>
+                <th scope="col" width="120">Price</th>
+                <th scope="col" class="text-right" width="200"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cart_item in cart.cartitem_set.all %}
+              <tr>
+                <td>
+                  <figure class="itemside">
+                    <div class="aside">
+                      <img
+                        src="/media/{{ cart_item.product.productimage_set.all.first.image }}"
+                        class="img-sm"
+                      />
+                    </div>
+                    <figcaption class="info">
+                      <a href="{% url 'get_product' cart_item.product.slug %}" class="title text-dark">
+                        {{ cart_item.product.product_name }}
+                      </a>
+                    </figcaption>
+                  </figure>
+                </td>
+                <td>
+                  <select class="form-control" onchange="updateCartItem(this, '{{ cart_item.id }}')">
+                    {% for i in quantity_range %}
+                      <option value="{{ i }}" {% if cart_item.quantity == i %}selected{% endif %}>{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <div class="price-wrap">
+                    <var class="price">${{ cart_item.get_price }} </var>
+                  </div>
+
+                </td>
+                <td class="text-right">
+                  <a href="{% url 'remove_cart' cart_item.id %}" class="btn btn-danger">Remove</a>
+                </td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <div class="card-body border-top">
+
+            <button id="submit" class="btn btn-primary float-md-right">
+                <div class="spinner hidden" id="spinner"></div>
+                <span id="button-text">Pay</span>
+            </button>
+
+            <a href="{% url 'index' %}" class="btn btn-light">
+              <i class="fa fa-chevron-left"></i> Continue Shopping
+            </a>
+          </div>
+        </div>
+
+      </main>
+
+      <aside class="col-md-3">
+        <div class="card mb-3">
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <dl class="dlist-align">
+              <dt>Total price:</dt>
+              <dd class="text-right">
+                <strong>${{ cart.get_total }}</strong>
+              </dd>
+            </dl>
+            <hr />
+            <p class="text-center mb-3">
+              <img src="{% static 'images/misc/payments.png' %}" height="26" />
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+    document.querySelector("#submit").addEventListener("click", () => {
+        fetch("{% url 'cart' %}", {
+            method:"POST",
+            headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },})
+        .then((resp) => {
+            const contentType = resp.headers.get("Content-Type");
+            if (contentType && contentType.includes("application/json")) {
+                return resp.json().then((data) => {
+                    if (data.ses) {
+                        const stripe = Stripe('pk_test_51Q9Jt9BaqUO5LGpRP7hMajts6LsITnp1BxqYIerAHQqabFcT1m020Cvp8jVbZB0FZ3ykpCAMQ2vdbGCiKWnZHXeE00rbXXCTOj');
+                        return stripe.redirectToCheckout({ sessionId: data.ses });
+                    }
+                });
+            } else {
+               
+                return resp.text().then((html) => {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
+
+  function updateCartItem(selectElement, cartItemId) {
+    const quantity = selectElement.value;
+
+    fetch("{% url 'update_cart_item' %}",  {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({
+            "cart_item_id": cartItemId,
+            "quantity": quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.reload();
+        } else {
+            alert("Error updating cart");
+        }
+    });
+}
+</script>
+{% endblock %}

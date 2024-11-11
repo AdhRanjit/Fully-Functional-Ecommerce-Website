@@ -1,0 +1,34 @@
+<!-- Basic about page template-->
+{% extends "base/base.html" %} 
+{% load static %}
+{% block title %}About Us{% endblock %}
+{% block start %}
+
+<style>
+  p {
+    line-height: 2rem;
+    text-align: justify;
+  }
+</style>
+
+<section class="section-content padding-y">
+  <div class="container-xl d-flex justify-content-center align-items-center">
+    <div class="row justify-content-center w-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h2>About Us</h2>
+            <p class="about-description">
+              Welcome to Brand- T! We are proven to be besy E-Commerce website created by Two Expert- Ranjit Adhikari (CEO and Founder) and Simon Newcomb (Co-founder and CTO).
+            </p>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <p> If you have any questions or comments, please don't hesitate to <a href="{% url 'contact' %}">contact us.</a> </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
