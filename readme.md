@@ -65,12 +65,19 @@ Install all required packages from the requirements.txt file
 ### Step 9: Run Migrations
 Run migrations for your Django apps:
 > python manage.py makemigrations
+
 > python manage.py migrate
+
 > python manage.py makemigrations home
+
 > python manage.py migrate
+
 > python manage.py makemigrations products
+
 > python manage.py migrate
+
 > python manage.py makemigrations accounts
+
 > python manage.py migrate
 
 #### Note: otherwise you can directly type: 
