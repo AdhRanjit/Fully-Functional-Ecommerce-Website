@@ -94,10 +94,15 @@ Open the Django shell:
 
 **Configure the domain and name for the site:**
 > from django.contrib.sites.models import Site
+
 > site = Site.objects.get(id=1)
+
 > site.domain = 'localhost:8000'  # Replace with your domain
+
 > site.name = 'BrandT'            # Set the site name
+
 > site.save()
+
 > exit()
 
 ### Step 12: Run your server
@@ -122,10 +127,14 @@ Follow the instruction as per Stripe Policy. One of the instruction is:
 follow this steps:**
 For my project: C:\Users\rjadh\OneDrive\Desktop\Program\SE_Project\Project\Client>
 (Powershell)
-1. Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-2. .\venv\Scripts\Activate
-3. python manage.py runserver
-4. open http://127.0.0.1:8000/ in website for website
-5. http://127.0.0.1:8000/admin/login/?next=/admin/ to login admin page
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   
+> .\venv\Scripts\Activate
+
+> python manage.py runserver
+
+> open http://127.0.0.1:8000/ in website for website
+
+> http://127.0.0.1:8000/admin/login/?next=/admin/ to login admin page
 
 Youtube Video: Will posted very soon!
