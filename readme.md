@@ -1,4 +1,5 @@
-Brand T:
+#Brand T:
+
 Brand T is a streamlined e-commerce website designed and developed by Ranjit Adhikari and Simon Newcomb as part of their Software Engineering project.
 The website focuses on delivering a simple and genuine shopping experience by featuring products from a single, verified seller. 4
 With an emphasis on clean UX/UI design, Brand T aims to provide customers with a trustworthy platform for their online purchases while
