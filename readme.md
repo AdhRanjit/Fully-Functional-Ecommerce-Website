@@ -137,4 +137,4 @@ For my project: C:\Users\rjadh\OneDrive\Desktop\Program\SE_Project\Project\Clien
 
 > http://127.0.0.1:8000/admin/login/?next=/admin/ to login admin page
 
-Youtube Video: Will posted very soon!
+Youtube Video: https://youtu.be/REMY_jOZK_0
